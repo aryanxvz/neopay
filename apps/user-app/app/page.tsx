@@ -1,7 +1,7 @@
 "use client"
 
 import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
-import { Appbar } from "../../../packages/ui/src/appbar";
+import { Appbar } from "../../../packages/ui/src/Appbar";
 
 // Create a wrapper component to use SessionProvider
 function PageContent() {
