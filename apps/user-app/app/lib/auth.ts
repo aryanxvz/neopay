@@ -9,13 +9,12 @@ export const authOptions = {
         name: 'Credentials',
         credentials: {
             phone: { label: "Phone number", type: "text", placeholder: "Enter your Phone number", required: true },
-            password: { label: "Password", type: "password", placeholder: "Enter your Password", required: true },
+            username: { label: "Userame", type: "text", placeholder: "Enter your Username", required: true },
             name: { label: "Name", type: "text", placeholder: "Enter your Name", required: true },
-            username: { label: "Name", type: "text", placeholder: "Enter your Username", required: true }
+            password: { label: "Password", type: "password", placeholder: "Enter your Password", required: true }
         },
 
         async authorize(credentials: any) {
-        // Hash the password
         const hashedPassword = await bcrypt.hash(credentials.password, 10);
         const existingUser = await db.user.findFirst({
             where: {
@@ -24,13 +23,12 @@ export const authOptions = {
         });
 
         if (existingUser) {
-            // Validate the password
             const passwordValidation = await bcrypt.compare(credentials.password, existingUser.password);
             if (passwordValidation) {
                 return {
                 id: existingUser.id.toString(),
                 name: existingUser.name,
-                email: existingUser.number ? existingUser.number.toString() : null
+                phone: existingUser.number ? existingUser.number.toString() : null
                 };
             }
             return null;
@@ -51,7 +49,7 @@ export const authOptions = {
                 return {
                     id: user.id.toString(),
                     name: user.name,
-                    email: user.number ? user.number.toString() : null
+                    phone: user.number ? user.number.toString() : null
                 };
             } catch (e) {
                 console.error(e);
