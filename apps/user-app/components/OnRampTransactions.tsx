@@ -14,7 +14,7 @@ export const OnRampTransactions = ({
 }) => {
     if (!transactions.length) {
         return <Card title="Recent Transactions">
-            <div className="text-center pb-8 pt-8">
+            <div className="text-center pb-8 pt-12">
                 No Recent transactions
             </div>
         </Card>
