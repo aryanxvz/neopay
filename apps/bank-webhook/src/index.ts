@@ -1,12 +1,15 @@
-
 import express from "express";
-import db from "@repo/db/client"
+import db from "@repo/db/client";
 
 const app = express();
+app.use(express.json())
 
 app.post("/hdfcWebhook", async (req, res) => {
-    //TODO: Add zod validation here?
-    const paymentInformation = {
+    const paymentInformation: {
+        token: string;
+        userId: string;
+        amount: string
+    } = {
         token: req.body.token,
         userId: req.body.user_identifier,
         amount: req.body.amount
@@ -14,34 +17,36 @@ app.post("/hdfcWebhook", async (req, res) => {
 
     try {
         await db.$transaction([
-            db.balance.update({
+            db.balance.updateMany({
                 where: {
-                    userId: paymentInformation.userId
+                    userId: Number(paymentInformation.userId)
                 },
-                data : {
+                data: {
                     amount: {
-                        increment: paymentInformation.amount
+                        increment: Number(paymentInformation.amount)
                     }
                 }
             }),
-            db.onRampTransaction.update({
+            db.onRampTransaction.updateMany({
                 where: {
                     token: paymentInformation.token
-                },
+                }, 
                 data: {
-                    status: "Success"
+                    status: "Success",
                 }
             })
-        ])
-        res.status(200).json({
+        ]);
+
+        res.json({
             message: "Captured"
         })
-
     } catch(e) {
-        console.error(e)
+        console.error(e);
         res.status(411).json({
             message: "Error while processing webhook"
         })
     }
-    
+
 })
+
+app.listen(3003);
