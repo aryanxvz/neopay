@@ -28,7 +28,7 @@ export default async function Dashboard() {
 
     return (
         <div className="w-full mr-4">
-            <div className="text-2xl font-bold p-6 ml-1">
+            <div className="text-4xl font-bold p-6 ml-1">
                 Dashboard
             </div>
             <div className="px-6">

@@ -57,7 +57,7 @@ export default async function TransactionsPage() {
                     {p2pTransfersSent.map((txn) => (
                         <div key={txn.id} className="flex justify-between border-b border-slate-300 ml-4 pb-2 pt-2">
                             <div>
-                                <div>To: {txn.toUser.name}</div>
+                                <div>To: {txn.toUser?.name ?? "Unknown User"}</div>
                                 <div>Timestamp: {new Date(txn.timestamp).toLocaleString()}</div>    
                             </div>
                             <div className="font-medium content-center pr-8">Amount: {txn.amount / 100} INR</div>
@@ -70,7 +70,7 @@ export default async function TransactionsPage() {
                     {p2pTransfersReceived.map((txn) => (
                         <div key={txn.id} className="flex justify-between border-b border-slate-300 ml-4 pb-2 pt-2">
                         <div>
-                            <div>To: {txn.toUser.name}</div>
+                            <div>From: {txn.toUser?.name ?? "Unknown User"}</div>
                             <div>Timestamp: {new Date(txn.timestamp).toLocaleString()}</div>    
                         </div>
                         <div className="font-medium content-center pr-8">Amount: {txn.amount / 100} INR</div>

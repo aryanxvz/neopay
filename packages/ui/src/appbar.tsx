@@ -17,7 +17,7 @@ export const Appbar = ({
 
     return (
         <div className="flex justify-between border-b px-12">
-            <div className="text-xl font-medium flex flex-col justify-center text-4xl">
+            <div className="text-xl font-bold flex flex-col justify-center text-4xl">
                 PayTM
             </div>
             <div className="flex flex-col justify-center pt-4 pb-2">
