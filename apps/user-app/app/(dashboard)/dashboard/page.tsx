@@ -1,38 +1,82 @@
+import React from 'react';
+import { authOptions } from '../../lib/auth';
+import { getServerSession } from 'next-auth';
+import prisma from '@repo/db/client';
 
-import React from "react";
-import { authOptions } from "../../lib/auth";
-import { getServerSession } from "next-auth";
-import prisma from "@repo/db/client";
-import { BalanceCard } from "../../../components/BalanceCard";
-
-async function getBalance() {
+async function getUserData() {
     const session = await getServerSession(authOptions);
+
     if (!session) {
-        return { amount: 0, locked: 0 };
+        return { user: null, balance: 0, recentTransactions: [] };
     }
 
+    const user = await prisma.user.findUnique({
+        where: { id: Number(session.user.id) },
+    });
+
     const balance = await prisma.balance.findFirst({
+        where: { userId: user?.id },
+    });
+
+    const recentTransactions = await prisma.p2pTransfer.findMany({
         where: {
-            userId: Number(session.user.id)
-        }
+            OR: [
+                { fromUserId: user?.id },
+                { toUserId: user?.id },
+            ],
+        },
+        include: {
+            fromUser: true,
+            toUser: true,
+        },
+        orderBy: { timestamp: 'desc' },
+        take: 5,
     });
 
     return {
-        amount: balance?.amount || 0,
-        locked: balance?.locked || 0
-    }
+        user,
+        balance: balance ? balance.amount : 0,
+        recentTransactions,
+    };
 }
 
-export default async function Dashboard() {
-    const balance = await getBalance();
+export default async function HomePage() {
+    const { user, balance, recentTransactions } = await getUserData();
 
     return (
-        <div className="w-full mr-4">
-            <div className="text-4xl font-bold p-6 ml-1">
-                Dashboard
+        <div className="w-full p-6">
+            <h1 className="text-4xl pt-10 mb-8 font-bold">Welcome back, {user?.name || 'User'}!</h1>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                <div className="bg-white shadow rounded-lg p-6">
+                    <h2 className="text-xl font-medium mb-2">Account Summary</h2>
+                    <p>Total Balance: {balance / 100} INR</p>
+                    <p>Locked Balance: {/* Locked balance value */}</p>
+                    <p>Available Balance: {balance / 100} INR</p>
+                </div>
+                
+                <div className="bg-white shadow rounded-lg p-6">
+                    <h2 className="text-xl font-medium mb-2">Quick Actions</h2>
+                    <button className="w-full bg-blue-500 text-white py-2 px-4 rounded mb-2">Add Money</button>
+                    <button className="w-full bg-blue-500 text-white py-2 px-4 rounded mb-2">Transfer Money</button>
+                    <button className="w-full bg-blue-500 text-white py-2 px-4 rounded">View Transactions</button>
+                </div>
+                
+                <div className="bg-white shadow rounded-lg p-6">
+                    <h2 className="text-xl font-medium mb-2">Recent Transactions</h2>
+                    <ul>
+                        {recentTransactions.map(txn => (
+                            <li key={txn.id} className="border-b border-gray-200 py-2">
+                                {txn.fromUser.name} sent {txn.amount / 100} INR to {txn.toUser.name} on {new Date(txn.timestamp).toLocaleString()}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </div>
-            <div className="px-6">
-                <BalanceCard amount={balance.amount} locked={balance.locked} />
+
+            <div className="bg-white shadow rounded-lg p-6">
+                <h2 className="text-xl font-medium mb-2">Notifications</h2>
+                <p>No new notifications</p>
             </div>
         </div>
     );
