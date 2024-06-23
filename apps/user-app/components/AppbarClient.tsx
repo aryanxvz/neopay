@@ -1,6 +1,6 @@
 "use client";
+import { Appbar } from "@repo/ui/appbar";
 import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
-import { Appbar } from "../../../packages/ui/src/Appbar";
 import { useRouter } from "next/navigation";
 import React from "react";
 
