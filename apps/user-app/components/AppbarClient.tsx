@@ -6,7 +6,7 @@ import React from "react";
 
 function AppbarClientContent() {
   const session = useSession();
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <div>
