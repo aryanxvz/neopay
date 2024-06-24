@@ -19,7 +19,7 @@ function AppbarClientContent() {
         user={session.data?.user}
       />
     </div>
-  );
+  )
 }
 
 export function AppbarClient() {
