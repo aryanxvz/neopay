@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 function AppbarClientContent() {
-  const session = useSession();
+  const session = useSession()
   const router = useRouter()
 
   return (
