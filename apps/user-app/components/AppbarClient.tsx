@@ -1,3 +1,4 @@
+
 "use client";
 import { Appbar } from "@repo/ui/appbar";
 import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
