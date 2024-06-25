@@ -1,0 +1,19 @@
+{
+    "builds": [
+      {
+        "src": "apps/user-app/package.json",
+        "use": "@vercel/next"
+      },
+      {
+        "src": "packages/ui/package.json",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "apps/user-app/$1"
+      }
+    ]
+  }
+  
