@@ -63,7 +63,7 @@ export default async function HomePage() {
                 <div className="col-span-1 md:col-span-2 bg-white shadow rounded-lg p-6">
                     <h2 className="text-2xl font-medium mb-2">Recent Transactions</h2>
                     <ul>
-                        {recentTransactions.map(txn => (
+                        {recentTransactions.map((txn: { id: string; fromUser: { name: string }; amount: number; toUser: { name: string }; timestamp: string | number | Date; }) => (
                             <li key={txn.id} className="border-b border-gray-200 py-2">
                                 {txn.fromUser.name} sent {txn.amount / 100} INR to {txn.toUser.name} on {new Date(txn.timestamp).toLocaleString()}
                             </li>
