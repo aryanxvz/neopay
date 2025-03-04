@@ -1,7 +1,7 @@
-# PayTM Clone
+# NeoPay
 
-A full-stack PayTM clone built using modern web technologies.   
-App live on: 
+A full-stack transaction app built using modern web technologies.   
+App not live! Bank webhook inactive!!
 
 ## Stack
 
@@ -16,7 +16,7 @@ App live on:
 
 ## Features
 
-- Sign up or log in to start managing your PayTM account
+- Sign up or log in to start managing your NeoPay account
 - User authentication and authorization
 - Add money to your account
 - Transfer money to other users
@@ -34,7 +34,7 @@ App live on:
 Clone the repository:
 
 ```bash
-git clone https://github.com/aryanxvz/paytm.git
+git clone https://github.com/aryanxvz/neopay.git
 ```
 
 
